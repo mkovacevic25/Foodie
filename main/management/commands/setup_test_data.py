@@ -3,18 +3,20 @@ import random
 from django.db import transaction
 from django.core.management.base import BaseCommand
 
-from main.models import Autor, Kategorija, Recept, Savjeti
+from main.models import Autor, Kategorija, Recept, Savjeti, NutritivneInformacije
 from main.factory import (
     AutorFactory,
     KategorijaFactory,
     ReceptFactory,
-    SavjetiFactory
+    SavjetiFactory,
+    NutritivneInformacijeFactory
 )
 
 NUM_AUTOR = 10
 NUM_KATEGORIJE = 3
 NUM_RECEPTI = 100
 NUM_SAVJETI = 50
+NUM_INFORMACIJE = 0
 
 class Command(BaseCommand):
     help = "Generates test data"
@@ -39,3 +41,6 @@ class Command(BaseCommand):
     
         for _ in range(NUM_SAVJETI):
             savjeti = SavjetiFactory()
+
+        for _ in range(NUM_INFORMACIJE):
+            informacije = NutritivneInformacijeFactory()

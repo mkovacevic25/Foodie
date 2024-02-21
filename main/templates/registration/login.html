@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            Unos nije ispravan.
+        </div>
+        {% endif %}
+        {% if next %}
+            {% if user.is_authenticated %}
+            <div class="alert alert-danger" role="alert">
+                Vaš račun nema pristup ovoj stranici. Za nastavak, molimo prijavite se s računom koji ima pristup.
+            </div>
+            {% else %}
+            <div class="alert alert-warning" role="alert">
+                Molimo prijavite se kako biste vidjeli ovu stranicu.
+            </div>
+            {% endif %}
+        {% endif %}
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Korisničko ime:</label>
+                {{ form.username }}
+            </div>
+            <div class="form-group">
+                <label for="password">Lozinka:</label>
+                {{ form.password }}
+            </div>
+            <button type="submit" class="btn btn-primary">Prijavi se</button>
+            <input type="hidden" name="next" value="{{ next }}" />
+        </form><br>
+        <p>Nemate korisnički račun?<a class="nav-link" href="{% url 'main:register' %}">Registrirajte se!</a></p>
+        
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

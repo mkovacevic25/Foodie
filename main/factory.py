@@ -19,6 +19,16 @@ class KategorijaFactory(DjangoModelFactory):
     naziv_kategorije = factory.Faker("word")
     opis_kategorije = factory.Faker("text")
 
+class NutritivneInformacijeFactory(DjangoModelFactory):
+    class Meta:
+        model = NutritivneInformacije
+
+    recept = factory.Iterator(Recept.objects.all())
+    kalorije = factory.Faker('random_int', min=50, max=1000)
+    proteini = factory.Faker('random_number', digits=2)
+    ugljikohidrati = factory.Faker('random_number', digits=2)
+    masti = factory.Faker('random_number', digits=2)
+
 
 class ReceptFactory(DjangoModelFactory):
     class Meta:
@@ -31,6 +41,7 @@ class ReceptFactory(DjangoModelFactory):
     vrijeme_objave = factory.Faker('date_time', tzinfo=timezone.get_current_timezone())
     autor_recepta = factory.Iterator(Autor.objects.all())
     kategorija = factory.Iterator(Kategorija.objects.all())
+    nutritivne_informacije = factory.RelatedFactory(NutritivneInformacijeFactory, 'recept')
 
 
 class SavjetiFactory(DjangoModelFactory):

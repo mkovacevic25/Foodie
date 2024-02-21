@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Izbrišite recept</title>
+</head>
+<body>
+    <h1>Izbrišite recept</h1>
+    <p>Jeste li sigurni da želite izbrisati? "{{ recept.naziv }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="Confirm Delete">
+    </form>
+</body>
+</html>

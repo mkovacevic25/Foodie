@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <title>Recepti</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .hidden-content {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">Foodie</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+    
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'landing' %}active{% endif %}" href="{% url 'main:landing' %}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'add' %}active{% endif %}" href="{% url 'main:add' %}">Dodajte recept</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'recepti' %}active{% endif %}" href="{% url 'main:recepti' %}">Prikaz svih recepata</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'savjeti' %}active{% endif %}" href="{% url 'main:savjeti' %}">Dodajte savjet</a>
+                        </li>
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0">
+                        <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'logout' %}">Odjava</a>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        <br>
+        {% for recept in recept_list %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h4 class="card-title">{{ recept.naziv }}</h4>
+                    <p class="card-text">Težina izrade: {{ recept.tezina_izrade }}</p>
+                    <p class="card-text">Vrijeme izrade: {{ recept.vrijeme_izrade }}</p>
+                    <p class="card-text">Opis: {{ recept.opis }}</p>
+                    <p class="card-text">Vrijeme objave: {{ recept.vrijeme_objave }}</p>        
+                    <p class="card-text">Autor: {{ recept.autor_recepta }}</p>
+                    <p class="card-text">Kategorija: {{ recept.kategorija }}</p>
+                    <a href="{% url 'main:update' recept.pk %}" class="btn btn-primary">Update</a>
+                    <a href="{% url 'main:delete' recept.pk %}" class="btn btn-danger">Delete</a>
+                    
+                    <!-- Nutritivne informacije - button -->
+                    <button class="btn btn-info" onclick="toggleContent('nutritivne-{{ recept.id }}')">Prikaži nutritivne informacije</button>
+                    <div id="nutritivne-{{ recept.id }}" class="hidden-content">
+                        {% if recept.nutritivneinformacije %}
+                            <h5>Nutritivne informacije:</h5>
+                            <p>Kalorije: {{ recept.nutritivneinformacije.kalorije }}</p>
+                            <p>Proteini: {{ recept.nutritivneinformacije.proteini }}</p>
+                            <p>Ugljikohidrati: {{ recept.nutritivneinformacije.ugljikohidrati }}</p>
+                            <p>Masti: {{ recept.nutritivneinformacije.masti }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Savjeti - button -->
+                    <button class="btn btn-secondary" onclick="toggleContent('savjeti-{{ recept.id }}')">Prikaži savjete</button>
+                    <div id="savjeti-{{ recept.id }}" class="hidden-content">
+                        <h5>Savjeti:</h5>
+                        <ul>
+                            {% for savjet in recept.savjeti_set.all %}
+                                <li>{{ savjet.naslov }}: {{ savjet.tekst_savjeta }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function toggleContent(elementId) {
+            var element = document.getElementById(elementId);
+            if (element.style.display === "none") {
+                element.style.display = "block";
+            } else {
+                element.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
+

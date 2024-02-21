@@ -37,3 +37,14 @@ class Savjeti(models.Model):
 
     def __str__(self):
         return self.naslov
+    
+class NutritivneInformacije(models.Model):
+    recept = models.OneToOneField('Recept', on_delete=models.CASCADE, null=True, blank=True)
+    kalorije = models.IntegerField()
+    proteini = models.DecimalField(max_digits=5, decimal_places=2)
+    ugljikohidrati = models.DecimalField(max_digits=5, decimal_places=2)
+    masti = models.DecimalField(max_digits=5, decimal_places=2)
+
+    def __str__(self):
+        return f"Nutritivne informacije za recept: {self.recept}"
+    

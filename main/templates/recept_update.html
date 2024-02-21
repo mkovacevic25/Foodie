@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ažurirajte Recept</title>
+</head>
+<body>
+    <h1>Ažurirajte Recept </h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Ažurirajte Recept</button>
+    </form>
+</body>
+</html>
